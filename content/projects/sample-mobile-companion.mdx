@@ -1,0 +1,55 @@
+---
+title: "Sample — Field Service Mobile App"
+summary: "Placeholder case study. Replace with a real project: a React Native app that let field technicians work through jobs offline and sync when they got signal."
+role: "Solo developer"
+client: "Sample client"
+year: 2026
+order: 2
+featured: true
+status: in-progress
+stack: ["React Native", "Expo", "TypeScript", "SQLite", "Supabase"]
+highlights:
+  - "Full offline capability — technicians work through a shift with no connectivity"
+  - "Shares its API layer with the existing web dashboard"
+  - "Job completion reporting dropped from next-day to same-visit"
+links:
+  repo: "https://github.com/Dalimpolos29"
+---
+
+<Callout>
+  **Sample content.** Replace this file with a real project, or delete it before publishing.
+</Callout>
+
+## The problem
+
+Field technicians were completing jobs on paper and typing them up that evening. Reports arrived a
+day late, photos went missing, and the office had no visibility into what was finished until
+someone called in.
+
+Coverage at the sites they visit is unreliable, so an online-only app was never going to work.
+
+## What I built
+
+A cross-platform app built on Expo, with a local SQLite database as the primary store. The device
+writes locally first and reconciles with the server whenever a connection appears — the technician
+never waits on the network.
+
+- **Local-first data layer** with a sync queue and conflict resolution
+- **Photo capture** compressed on-device and uploaded opportunistically
+- **Shared types** with the web dashboard, so the API contract can't drift between the two
+- **Signature capture** for job sign-off at the customer's door
+
+## Decisions worth explaining
+
+**Local-first instead of caching.** A cache assumes the network is normally there. For this use case
+it usually isn't, so the local database is the source of truth and the server is the thing that
+eventually catches up.
+
+**Expo over bare React Native.** The app needed camera, file system and background sync — all
+covered by Expo modules. Staying inside managed Expo kept the build pipeline to a single command
+and avoided maintaining native project files for a two-person operation.
+
+## Where it stands
+
+Currently in pilot with a small group of technicians. Same-visit reporting is already working; the
+next milestone is scheduling and route optimisation.

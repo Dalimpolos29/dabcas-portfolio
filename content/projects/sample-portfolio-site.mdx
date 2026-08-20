@@ -1,0 +1,52 @@
+---
+title: "Sample — This Website"
+summary: "Placeholder case study. This portfolio itself: a statically generated Next.js site with MDX case studies and a design system driven by CSS custom properties."
+role: "Solo developer"
+client: "Personal project"
+year: 2026
+order: 3
+featured: true
+status: live
+stack: ["Next.js", "TypeScript", "Tailwind CSS v4", "MDX", "Vercel"]
+highlights:
+  - "Every page statically generated — no runtime data fetching"
+  - "Adding a project is one markdown file, no code changes"
+  - "Light and dark themes from a single set of design tokens"
+links:
+  repo: "https://github.com/Dalimpolos29/dabcas-portfolio"
+---
+
+<Callout>
+  **Sample content.** Feel free to keep this one and rewrite it in your own words — a portfolio that
+  documents itself is a reasonable first case study.
+</Callout>
+
+## The idea
+
+A portfolio has two audiences with different needs. A hiring manager wants evidence, quickly. A
+prospective client wants to know whether I can be trusted with their budget. The same site has to
+serve both without feeling like it's hedging.
+
+## How it's built
+
+Next.js App Router with everything statically generated at build time. Case studies live as MDX
+files under `content/projects/`, parsed with `gray-matter` and rendered through `next-mdx-remote`.
+Adding a project means adding a file — there's no CMS to log into and no deploy step to remember.
+
+The design system is a set of CSS custom properties consumed by Tailwind v4's `@theme` block.
+Changing the accent colour is a one-line edit, and light/dark are the same tokens with different
+values rather than two parallel sets of classes.
+
+## Decisions worth explaining
+
+**Files over a CMS.** A headless CMS adds an account, a network dependency and a free tier that
+might disappear. Markdown in the repository is versioned, diffable, and works offline.
+
+**One config file.** Name, role, availability, services, contact details and social links all live in
+`src/lib/site.ts`. Nothing personal is hardcoded in a component, so the whole site can be re-pointed
+at a different person or brand in one edit.
+
+## Outcome
+
+Fully static, no client-side data fetching, and a new case study takes about as long to publish as
+it takes to write.
