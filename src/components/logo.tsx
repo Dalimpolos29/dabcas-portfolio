@@ -38,7 +38,7 @@ export function Logo() {
   );
 }
 
-/** Studio lockup: wordmark plus descriptor. Used on /services and in the footer. */
+/** Studio lockup: wordmark plus descriptor. Kept for the DABCAS footnote. */
 export function CompanyMark({ className = "" }: { className?: string }) {
   return (
     <div className={`flex items-center gap-3 ${className}`}>

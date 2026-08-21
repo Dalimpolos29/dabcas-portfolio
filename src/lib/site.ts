@@ -1,158 +1,131 @@
 /**
- * Single source of truth for everything personal and brand-related.
- * Edit this file first — nearly every page reads from it.
+ * Single source of truth for everything personal.
+ * Facts here come from the current CV and verified project history.
  */
 
 export const site = {
-  // ---- Person -------------------------------------------------------------
   name: "Dennis Alimpolos",
   shortName: "Dennis",
-  role: "Full-Stack Developer",
-  // One line. Shows up in the hero, page titles and social share cards.
-  tagline: "I design and ship full-stack web applications end to end.",
-  // Two or three sentences. Hero paragraph.
+  role: "AI-Assisted Full-Stack Developer",
+  tagline: "I ship production web systems fast — and I own every line that goes out.",
   intro:
-    "I build production web applications from database to interface — Next.js and TypeScript on the front, typed APIs and Postgres behind them. I'm currently extending that into mobile, so the products I ship live everywhere my clients' users do.",
-  location: "Philippines",
+    "I build and deploy full-stack web applications that real organisations run on: payroll, school administration, alumni communities, online ordering. AI tooling is how I cover the ground of a whole team; the engineering judgement is mine.",
+  location: "Mabalacat, Pampanga, Philippines",
   timezone: "GMT+8",
-  // Set to false when you're not looking. Toggles the badge in the header/hero.
   availableForWork: true,
-  availabilityNote: "Open to full-time roles and freelance projects",
+  availabilityNote: "Open to full-time developer roles, remote or hybrid",
 
-  // ---- Studio / freelance brand -------------------------------------------
-  company: {
-    name: "DABCAS",
-    // Shown under the wordmark
-    descriptor: "Software Studio",
-    tagline: "Software built properly, by the person who'll maintain it.",
-    // The pitch on /services
-    pitch:
-      "DABCAS is my independent software practice. You work directly with the developer writing the code — no account managers, no handoffs, no team churn halfway through the build.",
-    founded: 2026,
-  },
-
-  // ---- Contact ------------------------------------------------------------
-  // TODO: point this at a real inbox (a domain address looks better than a
-  // personal one on a public site — e.g. set up hello@dabcas.dev forwarding).
-  email: "hello@dabcas.dev",
+  email: "imdennisalimpolos@gmail.com",
+  phone: "+63 976 157 1657",
   socials: {
     github: "https://github.com/Dalimpolos29",
-    linkedin: "", // TODO: add your LinkedIn URL
-    x: "", // optional
+    linkedin: "https://www.linkedin.com/in/dennis-alimpolos-228753210/",
   },
-  // TODO: add your CV to public/ and set this to e.g. "/dennis-alimpolos-cv.pdf".
-  // Left empty so the site never ships a Résumé button that 404s.
+  // Add the PDF at public/dennis-alimpolos-cv.pdf to switch the Résumé button on.
   resumeUrl: "",
 
-  // ---- Deployment ---------------------------------------------------------
-  url: "https://dabcas.dev",
+  url: "https://dabcas-portfolio.vercel.app",
+
+  // The freelance practice. Deliberately a footnote, not a second brand.
+  company: {
+    name: "DABCAS",
+    descriptor: "Freelance practice",
+    note: "I take freelance work under the name DABCAS.",
+  },
 } as const;
 
 export const nav = [
   { href: "/work", label: "Work" },
   { href: "/about", label: "About" },
-  { href: "/services", label: "Services" },
   { href: "/contact", label: "Contact" },
 ] as const;
 
-/** Grouped skills for the About page. Keep each group to ~6 items. */
+/** Headline numbers for the home page. Every one is verifiable. */
+export const stats = [
+  { value: 200, suffix: "+", label: "users on one system" },
+  { value: 4, suffix: "", label: "products shipped" },
+  { value: 3, suffix: "", label: "live in production" },
+  { value: 338, suffix: "", label: "commits across them" },
+] as const;
+
 export const skills = [
   {
     group: "Frontend",
-    items: ["TypeScript", "React", "Next.js", "Tailwind CSS", "Zustand", "React Hook Form"],
+    items: ["TypeScript", "React", "Next.js", "Tailwind CSS", "PWA", "UI/UX Design"],
   },
   {
-    group: "Backend",
-    items: ["Node.js", "REST & Server Actions", "PostgreSQL", "Prisma", "Supabase", "Auth / RBAC"],
+    group: "Backend & Data",
+    items: ["Node.js", "PostgreSQL", "Supabase", "REST APIs", "Auth & RBAC", "SQL migrations"],
   },
   {
-    group: "Mobile",
-    items: ["React Native", "Expo", "Native modules", "App Store deployment"],
+    group: "Delivery",
+    items: ["Git & GitHub", "Vercel", "CI/CD", "Cloudflare", "System architecture"],
   },
   {
-    group: "Tooling & Delivery",
-    items: ["Git", "Claude Code", "Vercel", "Docker", "GitHub Actions", "Playwright"],
+    group: "AI-assisted",
+    items: ["Claude Code", "Codex", "Prompt engineering", "n8n automation"],
   },
 ] as const;
 
-/** What DABCAS sells. Rendered as cards on /services. */
-export const services = [
+/** The "How I work" strip on the home page. */
+export const approach = [
   {
-    title: "Web Applications",
+    title: "Ship in days, not quarters",
     description:
-      "Full-stack builds from an empty repository to a deployed product — auth, database design, admin tooling, payments and the interface on top.",
-    deliverables: ["Next.js + TypeScript", "Postgres schema & migrations", "CI/CD pipeline", "Handover documentation"],
+      "The Merit & Demerit system went from nothing to deployed in a single day, and 200+ people used it daily after that. AI tooling collapses the distance between a decision and working software.",
   },
   {
-    title: "Mobile Applications",
+    title: "Correctness before cleverness",
     description:
-      "Cross-platform apps that share a codebase and a backend with your web product, so features ship once instead of twice.",
-    deliverables: ["React Native / Expo", "Shared API layer", "Offline-capable storage", "Store submission"],
+      "The systems I build handle wages, attendance records and student discipline. I write the migration that reconciles to the centavo and the test that stops a permission scope quietly widening.",
   },
   {
-    title: "Rescue & Modernisation",
+    title: "I read every line that ships",
     description:
-      "An existing codebase that's slow, fragile or abandoned by its last developer. I audit it, stabilise it, then move it forward without a rewrite.",
-    deliverables: ["Technical audit", "Dependency & security upgrades", "Performance work", "Test coverage"],
+      "Speed is only worth having if you can still explain the code. I can walk through any decision in these projects and tell you what it does and why it's there.",
   },
 ] as const;
 
-/** How you work. Rendered as a numbered process strip on /services. */
-export const process = [
-  {
-    title: "Scope",
-    description:
-      "A call and a written brief. I define what's being built, what it costs and when it lands — before any code exists.",
-  },
-  {
-    title: "Build",
-    description:
-      "Short cycles with a deployed preview link at the end of each one. You see progress continuously, not at the end.",
-  },
-  {
-    title: "Ship",
-    description:
-      "Deployment to your infrastructure, with monitoring, documentation and a walkthrough so nothing depends on me being reachable.",
-  },
-  {
-    title: "Support",
-    description:
-      "A defined support window after launch, and an optional retainer if you want continuous improvement rather than a finished artefact.",
-  },
-] as const;
-
-/** Long-form bio for /about. Each string is a paragraph. */
 export const bio = [
-  "I'm a full-stack developer. Most of my work is building web applications end to end — designing the data model, writing the API, then building the interface that sits on top of it. I like owning the whole path from an empty repository to something people actually use.",
-  "My default stack is TypeScript everywhere: Next.js on the front, Node and Postgres behind it. I'm deliberately extending that into mobile with React Native, because most of the products worth building don't stop at the browser.",
-  "I work heavily with AI tooling — Claude Code is part of my day-to-day. It changes how much ground one developer can cover, but it doesn't change who's responsible for the result. I read every line that ships, and I can explain why each decision was made.",
-  "Outside of client work I'm building DABCAS into an independent software practice, so the way I work solo is the way I intend to keep working: clearly scoped, well documented, and handed over in a state someone else could pick up.",
+  "I'm a full-stack developer based in Pampanga, Philippines. I build web applications end to end — data model, API, and the interface on top — and I deploy them for people who then depend on them every day.",
+  "I came to development from teaching, not from a computer science degree. I'm currently a STEAM technology teacher, which means I spend my days explaining how software works to teenagers and my evenings building the systems my school and my clients actually run on. Four of those are in production now.",
+  "My stack is TypeScript everywhere: Next.js on the front, Supabase and Postgres behind it. I work heavily with AI tooling — Claude Code is part of my daily workflow. It changes how much ground one developer can cover; it doesn't change who's accountable for the result.",
+  "The work I'm proudest of isn't the fastest thing I've built. It's a payroll approval path where I found a race condition that could double-apply loan deductions, and fixed it so it can't happen again. That's real money belonging to real people.",
 ] as const;
 
-/** Timeline for /about. Newest first. */
 export const experience = [
   {
-    role: "Founder & Developer",
-    org: "DABCAS",
-    period: "2026 — Present",
+    role: "STEAM Teacher (Technology)",
+    org: "Saint Paul American School, Clark",
+    period: "Present",
     description:
-      "Independent software practice building web and mobile applications for clients, from scoping through deployment and support.",
+      "Teach AI, web development, programming and robotics to high school students, using n8n and Claude in real project work. Also build the school's internal systems — attendance, scoring, and the merit/demerit platform used by 200+ students, teachers and administrators.",
   },
-  // TODO: replace the entries below with your real roles, or delete them.
   {
-    role: "Full-Stack Developer",
-    org: "Add your employer or client",
-    period: "20XX — 20XX",
+    role: "AI-Assisted Full-Stack Developer (Freelance)",
+    org: "DABCAS",
+    period: "2023 — Present",
     description:
-      "What you owned, what you shipped, and the measurable result. One or two sentences is plenty.",
+      "Design, build and deploy web systems for clients: a DOLE-compliant payroll and attendance platform, an alumni community for 170–200 members, and a pastry ordering PWA serving 100–130 customers. Scoping through deployment and support, solo.",
+  },
+  {
+    role: "Technical Support Specialist",
+    org: "Apple · HelpFlow",
+    period: "Earlier",
+    description:
+      "Troubleshot technical issues across client systems and environments, and worked with cross-functional teams to resolve escalations. Where I learned to diagnose a problem from an unreliable description of it.",
   },
 ] as const;
 
-/** Optional: education, certifications, courses. Delete the array to hide the section. */
 export const education = [
   {
-    title: "Add your degree, bootcamp or certification",
-    org: "Institution",
-    period: "20XX",
+    title: "Bachelor in Business Teacher Education",
+    org: "Polytechnic University of the Philippines",
+    period: "2009 — 2013",
+  },
+  {
+    title: "Secondary School",
+    org: "Justice Cecilia Muñoz Palma High School",
+    period: "2005 — 2009",
   },
 ] as const;

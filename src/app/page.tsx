@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { ProjectCard } from "@/components/project-card";
 import { AvailabilityBadge, ButtonLink, Chip, Container, Section } from "@/components/ui";
 import { getFeaturedProjects } from "@/lib/projects";
-import { services, site, skills } from "@/lib/site";
+import { site, skills } from "@/lib/site";
 
 export default function HomePage() {
   const projects = getFeaturedProjects(3);
@@ -106,36 +106,6 @@ export default function HomePage() {
               </ul>
             </div>
           ))}
-        </div>
-      </Section>
-
-      {/* Studio teaser */}
-      <Section className="border-t border-border">
-        <div className="rounded-(--radius-card) border border-border bg-surface p-8 sm:p-12">
-          <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent">
-            {site.company.name} · {site.company.descriptor}
-          </p>
-          <h2 className="mt-4 max-w-2xl text-2xl font-semibold sm:text-3xl">
-            {site.company.tagline}
-          </h2>
-          <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-fg-muted">
-            {site.company.pitch}
-          </p>
-
-          <ul className="mt-8 grid gap-x-8 gap-y-3 sm:grid-cols-3">
-            {services.map((service) => (
-              <li key={service.title} className="border-t border-border pt-3 text-sm">
-                {service.title}
-              </li>
-            ))}
-          </ul>
-
-          <div className="mt-8">
-            <ButtonLink href="/services" variant="secondary" size="sm">
-              How I work with clients
-              <ArrowUpRight className="size-3.5" />
-            </ButtonLink>
-          </div>
         </div>
       </Section>
     </>
