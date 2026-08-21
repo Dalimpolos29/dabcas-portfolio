@@ -38,6 +38,10 @@ export function Counter({
 
   useEffect(() => {
     if (reduced) {
+      // The spring continuously follows `target` — jumping the spring alone
+      // is not enough, because `target` is still 0 and the spring re-converges
+      // straight back to it. Move both, so there is nothing left to follow.
+      target.set(value);
       spring.jump(value);
       return;
     }
