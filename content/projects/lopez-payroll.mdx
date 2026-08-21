@@ -1,0 +1,88 @@
+---
+title: "Payroll & Attendance System"
+summary: "A DOLE-compliant payroll platform for a Philippine manufacturer, with a three-stage approval workflow and an audit trail that reconciles to the centavo."
+role: "Solo developer"
+client: "Lopez Industries"
+year: 2026
+order: 1
+featured: true
+status: live
+stack: ["Next.js", "TypeScript", "Supabase", "PostgreSQL", "Zustand", "React Hook Form", "Vercel"]
+highlights:
+  - "Replaced a spreadsheet payroll process for a workforce paid on multi-shift, project-tracked attendance"
+  - "Found and fixed a race condition that could double-apply loan deductions to a worker's pay"
+  - "Migrated ₱4.2M of purchase-order history reconciled to the centavo, behind 162 tests"
+  - "Closed a security hole exposing all 59 database functions to the public API key"
+links: {}
+---
+
+The system this replaced was a spreadsheet, and the money it moves belongs to people who
+notice immediately when it is wrong. That shaped every decision in it.
+
+## What it does
+
+Attendance is encoded against multi-shift days — day, night and overtime, each with project
+tracking and 1–16 hour validation — then flows into DOLE 2025 compliant payroll processing and
+generated payslips. Nothing reaches an employee's pay without passing through three separate
+hands: **Data Encoder → Auditor → Approver**.
+
+That workflow is the product. A single person cannot both enter a number and approve it.
+
+## The bug worth talking about
+
+Approving a payroll run applies financial deductions — loan and cash-advance instalments.
+The approve handler checked the run's status, then applied the deductions.
+
+Two clicks arriving close together both passed the status check before either had written its
+result. The deductions applied twice. A worker's loan instalment came out of their pay twice in
+one run, and I found it in production.
+
+The fix was to stop treating status as something you read and then act on, and start treating it
+as something you *claim*:
+
+- The transition from `audited` to `approved` is now an atomic conditional update. Whichever
+  request wins the claim proceeds; the loser sees the run is no longer `audited` and stops.
+- Deductions only ever run after a successful claim, so concurrent or repeated requests cannot
+  re-apply them.
+- Reverting a run to draft had exactly the same shape of bug, so it got the same treatment.
+
+Reverting also had a second, quieter defect: it reversed deductions against *any* active service
+belonging to the employee, which meant it could credit back an older written-off loan while
+leaving the real one untouched. Reversal is now scoped to the specific service whose deduction
+history contains the run being reverted.
+
+## Getting the historical data in
+
+The client had years of purchase orders and liquidations in spreadsheets, and the acceptance
+condition was absolute: the migrated totals had to match the source **to the centavo**, with the
+original values preserved verbatim rather than cleaned up.
+
+Reconciling surfaced problems in the source data that nobody had known were there:
+
+- 157 rows where the recorded subtotal did not equal quantity × cost — ₱46,745 of drift
+- 34 duplicate purchase-request numbers
+- ₱1.31M of labour cost recorded in a log but never carried into the financial totals
+
+Original values live on in `legacy_*` columns so any figure can be traced back to the sheet it
+came from. The migration runs behind 162 tests, and the money boundary is proven by script rather
+than asserted.
+
+## Locking down the database
+
+Midway through, I checked what the public API key could actually reach and found that **all 59
+Postgres functions were callable by the anonymous role** — the migrations had created them
+without ever revoking execute.
+
+Rather than patch the exposed ones, I rebuilt the permission model in three tiers: anonymous gets
+nothing, the authenticated role gets the 35 identity and business functions it genuinely needs,
+and the service role gets 5 sign-in and account functions. `ALTER DEFAULT PRIVILEGES` keeps future
+functions locked by default, sensitive columns use column-level grants so the service role cannot
+overwrite an email or a role, and regression tests assert the scopes do not silently widen again.
+
+I rejected the quick versions of this fix — blanket grants, `SECURITY DEFINER` login functions,
+moving the lockout into the browser — because each one trades a real boundary for a shorter diff.
+
+## Status
+
+Running in production. The live application is not linked here: it holds real employee wage data.
+Happy to walk through the codebase in an interview.

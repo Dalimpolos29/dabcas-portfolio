@@ -1,0 +1,49 @@
+---
+title: "Sisters & Mom — Pastry PWA"
+summary: "An installable progressive web app for a family pastry business: catalogue, ordering, checkout and push notifications for 100–130 customers."
+role: "Solo developer"
+client: "Sisters & Mom"
+year: 2026
+order: 4
+featured: false
+status: live
+stack: ["Next.js", "TypeScript", "Supabase", "Web Push", "Resend", "Vercel"]
+highlights:
+  - "100–130 customers ordering through it"
+  - "Installable PWA with web push, so re-engagement doesn't depend on email"
+  - "Product variants grouped into single cards instead of duplicate listings"
+links:
+  live: "https://sistersandmom.site"
+  repo: "https://github.com/Dalimpolos29/sm_pastry"
+---
+
+A family pastry business selling through chat messages and a spreadsheet. The goal was an ordering
+flow their customers would actually use on a phone, without asking anyone to install anything from
+an app store.
+
+## Why a PWA
+
+The customers are on mobile and mostly on Android. A progressive web app installs from the browser,
+updates without a review process, and — the part that mattered commercially — supports **web push**.
+A bakery's business is repeat custom, and "the ube cheesecake is back" reaching someone's lock
+screen converts in a way an email never did.
+
+## What it does
+
+- Catalogue with categories, backed by Supabase with image storage
+- Ordering and checkout with order tracking
+- Web push notifications for new batches and order updates
+- Transactional email via Resend
+
+## A modelling decision that paid off
+
+Products come in variants — half dozen and a dozen, small and large, per-piece. Modelled naively,
+each variant is its own product, and the catalogue becomes six near-identical cards for one cake.
+
+Variants are now grouped: one product card with a selector, one image, one description. That
+collapsed the catalogue to something browsable on a phone screen and removed a whole class of
+"which one of these is the actual product?" confusion.
+
+Image handling got the same treatment — uploads replace cleanly, deleting the old file from
+storage rather than orphaning it, and files are named after the product instead of a random
+string, so the storage bucket stays legible to a human.

@@ -1,0 +1,49 @@
+---
+title: "Merit & Demerit Tracker"
+summary: "A school behaviour tracking system built and deployed in one day, now used daily by more than 200 students, teachers and administrators."
+role: "Solo developer"
+client: "Saint Paul American School"
+year: 2026
+order: 2
+featured: true
+status: live
+stack: ["Next.js", "React", "Supabase", "PostgreSQL", "Tailwind CSS", "Cloudflare", "Vercel"]
+highlights:
+  - "Nothing to deployed in a single day using AI-assisted development"
+  - "200+ students, teachers and administrators using it daily"
+  - "Replaced paper slips with a record that can actually be reported on"
+links:
+  live: "https://md-system.vercel.app"
+---
+
+I teach at this school. The behaviour system was paper slips, which meant the record existed but
+could never be looked at — no one could answer "has this been getting worse this term?" without
+going through a drawer.
+
+I built and deployed the replacement in a day.
+
+## Why one day was possible
+
+Not because the problem was trivial, but because I already knew it exactly. I was inside the
+institution that had it: I knew who issued slips, who needed to see them, what the pastoral care
+conversation actually needed to show, and which parts of the paper process were ritual rather than
+requirement.
+
+Most of what makes a build slow is discovering the domain. I skipped that, and AI tooling covered
+the mechanical distance between a decision and working code. What remained was:
+
+- A Postgres schema modelling merit and demerit events against students and issuing staff
+- Role-separated access — teachers log, administrators report
+- Views that answer the question the paper system couldn't: how is this student trending?
+
+## What it changed
+
+It went into daily use across 200+ students, teachers and administrators. The point isn't the
+speed — it's that behaviour discussions now start from a record instead of a recollection.
+
+## What I'd tell you in an interview
+
+Shipping in a day is a claim about throughput, and throughput without judgement is a liability.
+The reason I'm comfortable making it here is that this system's failure modes are mild: a
+mislogged merit point is embarrassing, not expensive. When I build something where a mistake costs
+someone money, I move differently — see the payroll case study.
