@@ -6,6 +6,10 @@ import type { ReactNode } from "react";
 /**
  * Fades and lifts its children into place the first time they scroll into view.
  * Under reduced motion it renders the final state with no animation at all.
+ *
+ * Always renders the same `motion.div` element on server and client — only
+ * the animation props vary on `reduced` — so there is no hydration mismatch
+ * for users whose first client render already reports reduced motion.
  */
 export function Reveal({
   children,
@@ -20,15 +24,13 @@ export function Reveal({
 }) {
   const reduced = useReducedMotion();
 
-  if (reduced) return <div className={className}>{children}</div>;
-
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={reduced ? false : { opacity: 0, y }}
+      whileInView={reduced ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] }}
+      transition={reduced ? undefined : { duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}
     </motion.div>
