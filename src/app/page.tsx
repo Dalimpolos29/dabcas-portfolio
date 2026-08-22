@@ -14,24 +14,32 @@ export default function HomePage() {
     <>
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-border">
-        <div className="pointer-events-none absolute inset-0 bg-grid bg-grid-fade opacity-60" aria-hidden="true" />
+        <div
+          className="pointer-events-none absolute inset-0 bg-rules bg-rules-fade opacity-40"
+          aria-hidden="true"
+        />
         <Container className="relative py-20 sm:py-28">
           <Reveal>
-            {site.availableForWork && <AvailabilityBadge label={site.availabilityNote} />}
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+              <p className="field text-accent">{site.name}</p>
+              {site.availableForWork && <AvailabilityBadge label={site.availabilityNote} />}
+            </div>
           </Reveal>
 
           <Reveal delay={0.06}>
-            <h1 className="mt-6 max-w-3xl text-4xl font-semibold leading-[1.08] sm:text-5xl md:text-6xl">
+            <h1 className="mt-8 max-w-4xl font-display text-[2.6rem] leading-[0.98] tracking-[-0.035em] sm:text-6xl md:text-7xl">
               {site.tagline}
             </h1>
           </Reveal>
 
           <Reveal delay={0.12}>
-            <p className="mt-6 max-w-xl text-[17px] leading-relaxed text-fg-muted">{site.intro}</p>
+            <p className="mt-8 max-w-xl border-l-2 border-accent pl-5 text-[17px] leading-relaxed text-fg-muted">
+              {site.intro}
+            </p>
           </Reveal>
 
           <Reveal delay={0.18}>
-            <div className="mt-9 flex flex-wrap items-center gap-3">
+            <div className="mt-10 flex flex-wrap items-center gap-3">
               <ButtonLink href="/work">
                 See what I&apos;ve shipped
                 <ArrowRight className="size-4" />
@@ -44,23 +52,24 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* Proof counters */}
-      <section className="border-b border-border bg-surface py-14">
+      {/* Proof counters — read as a ledger column, figures right-aligned */}
+      <section className="border-b border-border bg-surface">
         <Container>
-          <dl className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-4">
+          <dl className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             {stats.map((stat, index) => (
-              <Reveal key={stat.label} delay={index * 0.08}>
-                <div>
-                  <dt aria-hidden="true" className="sr-only">{stat.label}</dt>
+              <Reveal
+                key={stat.label}
+                delay={index * 0.08}
+                className="border-b border-border px-1 py-7 sm:px-6 lg:border-b-0 lg:border-r lg:last:border-r-0 lg:first:pl-1"
+              >
+                <div className="flex items-baseline justify-between gap-4 lg:block">
+                  <dt className="field lg:mb-3">{stat.label}</dt>
                   <dd>
                     <Counter
                       value={stat.value}
                       suffix={stat.suffix}
-                      className="block text-4xl font-semibold tracking-tight sm:text-5xl"
+                      className="block font-mono text-3xl font-medium tracking-tight text-accent tabular-nums sm:text-4xl"
                     />
-                    <span className="mt-2 block text-sm leading-snug text-fg-muted">
-                      {stat.label}
-                    </span>
                   </dd>
                 </div>
               </Reveal>
@@ -73,10 +82,13 @@ export default function HomePage() {
       <section className="border-b border-border py-16 sm:py-20">
         <Container className="mb-10">
           <Reveal>
-            <p className="mb-3 font-mono text-xs uppercase tracking-[0.18em] text-accent">
+            <p className="field mb-4 flex items-center gap-3 text-accent">
+              <span aria-hidden="true" className="h-px w-8 bg-accent" />
               Selected work
             </p>
-            <h2 className="text-2xl font-semibold sm:text-3xl">Four systems people use daily</h2>
+            <h2 className="font-display text-3xl leading-[1.05] sm:text-4xl">
+              Four systems people use daily
+            </h2>
             <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-fg-muted">
               Payroll, school administration, an alumni network and an ordering app. Each write-up
               covers the problem, the decisions and what shipped.
@@ -159,7 +171,7 @@ export default function HomePage() {
       <Section className="border-t border-border bg-surface">
         <Reveal>
           <div className="rounded-(--radius-card) border border-border bg-bg p-8 sm:p-12">
-            <h2 className="max-w-2xl text-2xl font-semibold sm:text-3xl">
+            <h2 className="max-w-2xl font-display text-3xl leading-[1.05] sm:text-4xl">
               I&apos;m looking for a developer role.
             </h2>
             <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-fg-muted">

@@ -25,11 +25,14 @@ export function Section({
         {(eyebrow || title || description) && (
           <div className="mb-10 max-w-2xl">
             {eyebrow && (
-              <p className="mb-3 font-mono text-xs uppercase tracking-[0.18em] text-accent">
+              <p className="field mb-4 flex items-center gap-3 text-accent">
+                <span aria-hidden="true" className="h-px w-8 bg-accent" />
                 {eyebrow}
               </p>
             )}
-            {title && <h2 className="text-2xl font-semibold sm:text-3xl">{title}</h2>}
+            {title && (
+              <h2 className="font-display text-3xl leading-[1.05] sm:text-4xl">{title}</h2>
+            )}
             {description && <p className="mt-3 text-[15px] leading-relaxed text-fg-muted">{description}</p>}
           </div>
         )}
@@ -40,7 +43,7 @@ export function Section({
 }
 
 const buttonBase =
-  "inline-flex items-center justify-center gap-2 rounded-lg text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-60";
+  "inline-flex items-center justify-center gap-2 rounded-xs font-mono text-[13px] font-medium tracking-wide transition-colors disabled:pointer-events-none disabled:opacity-60";
 
 const buttonSizes = {
   sm: "h-9 px-3.5",
@@ -49,7 +52,7 @@ const buttonSizes = {
 
 const buttonVariants = {
   primary: "bg-accent text-accent-contrast hover:bg-accent-hover",
-  secondary: "border border-border bg-surface text-fg hover:border-border-strong hover:bg-surface-raised",
+  secondary: "border border-border-strong bg-transparent text-fg hover:border-accent hover:text-accent",
   ghost: "text-fg-muted hover:bg-surface-raised hover:text-fg",
 } as const;
 
@@ -102,7 +105,7 @@ export function ButtonLink({
 export function Chip({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
     <span
-      className={`inline-flex items-center rounded-md border border-border bg-surface-raised px-2 py-0.5 font-mono text-[11px] text-fg-muted ${className}`}
+      className={`inline-flex items-center rounded-xs border border-border bg-transparent px-2 py-0.5 font-mono text-[11px] text-fg-muted ${className}`}
     >
       {children}
     </span>
@@ -112,10 +115,10 @@ export function Chip({ children, className = "" }: { children: ReactNode; classN
 /** Pulsing dot + label, used for the "available for work" signal. */
 export function AvailabilityBadge({ label }: { label: string }) {
   return (
-    <span className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs text-fg-muted">
+    <span className="field inline-flex items-center gap-2.5 border border-border bg-surface px-3 py-1.5 text-fg-muted">
       <span className="relative flex size-1.5">
-        <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-500 opacity-70" />
-        <span className="relative inline-flex size-1.5 rounded-full bg-emerald-500" />
+        <span className="absolute inline-flex size-full animate-ping rounded-full bg-accent opacity-70" />
+        <span className="relative inline-flex size-1.5 rounded-full bg-accent" />
       </span>
       {label}
     </span>
@@ -123,7 +126,7 @@ export function AvailabilityBadge({ label }: { label: string }) {
 }
 
 const statusStyles = {
-  live: "border-emerald-600/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400",
+  live: "border-accent/40 bg-accent/10 text-accent",
   "in-progress": "border-amber-600/30 bg-amber-500/10 text-amber-700 dark:text-amber-400",
   archived: "border-border bg-surface-raised text-fg-subtle",
 } as const;
@@ -137,7 +140,7 @@ const statusLabels = {
 export function StatusPill({ status }: { status: keyof typeof statusStyles }) {
   return (
     <span
-      className={`inline-flex items-center rounded-full border px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider ${statusStyles[status]}`}
+      className={`inline-flex items-center rounded-xs border px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.14em] ${statusStyles[status]}`}
     >
       {statusLabels[status]}
     </span>
