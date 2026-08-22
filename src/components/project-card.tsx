@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { ProjectCover } from "@/components/motion/project-cover";
+import { ProjectCover } from "@/components/project-cover";
 import { StatusPill } from "@/components/ui";
 import type { Project } from "@/lib/projects";
 
