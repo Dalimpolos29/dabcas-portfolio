@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useSyncExternalStore } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 import {
   useMotionValueEvent,
   useReducedMotion,
@@ -60,6 +60,28 @@ export function PinnedGallery({ projects }: { projects: Project[] }) {
     if (!el) return;
     el.scrollLeft = p * (el.scrollWidth - el.clientWidth);
   });
+
+  // A window resize (or anything else that changes the row's width, e.g.
+  // rotating a device or toggling devtools) leaves `scrollLeft` stale until
+  // the next scroll event. Recompute it from the current scroll progress
+  // whenever the scroller's box size changes, so it stays aligned.
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+
+    const recompute = () => {
+      el.scrollLeft = scrollYProgress.get() * (el.scrollWidth - el.clientWidth);
+    };
+
+    const observer = new ResizeObserver(recompute);
+    observer.observe(el);
+    window.addEventListener("resize", recompute);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", recompute);
+    };
+  }, [scrollYProgress]);
 
   const stack = (
     <div className="grid gap-6 sm:grid-cols-2">

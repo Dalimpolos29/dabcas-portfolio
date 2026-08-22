@@ -44,8 +44,8 @@ export const nav = [
 export const stats = [
   { value: 200, suffix: "+", label: "users on one system" },
   { value: 4, suffix: "", label: "products shipped" },
-  { value: 3, suffix: "", label: "live in production" },
-  { value: 338, suffix: "", label: "commits across them" },
+  { value: 3, suffix: "", label: "with public demos" },
+  { value: 338, suffix: "", label: "commits across three repos" },
 ] as const;
 
 export const skills = [

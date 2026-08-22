@@ -50,7 +50,8 @@ export function Counter({
 
   return (
     <span ref={ref} className={className}>
-      <motion.span>{display}</motion.span>
+      <motion.span aria-hidden="true">{display}</motion.span>
+      <span className="sr-only">{`${prefix}${value}${suffix}`}</span>
     </span>
   );
 }

@@ -32,8 +32,10 @@ npm run verify   # acceptance check — see below
 ### `src/lib/site.ts` — everything about you
 
 Name, role, tagline, location, availability, headline stats, skills, experience, education,
-email and social links. **No component hardcodes personal information** — every fact on the
-site is read from here, so changing anything here updates the whole site at once.
+email and social links. **Most personal facts live here, not scattered through components** —
+changing a fact in this file updates every place it's used. A few pieces of page-specific prose
+(the teaching paragraphs and "Four systems people use daily" on the home page, the freelance
+sentence on the about page) are written directly into their pages rather than sourced from here.
 
 `site.url` currently points at the Vercel-assigned URL. Adding a custom domain later is a
 one-line change to that field plus the corresponding domain configuration in Vercel.

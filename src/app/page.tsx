@@ -51,7 +51,7 @@ export default function HomePage() {
             {stats.map((stat, index) => (
               <Reveal key={stat.label} delay={index * 0.08}>
                 <div>
-                  <dt className="sr-only">{stat.label}</dt>
+                  <dt aria-hidden="true" className="sr-only">{stat.label}</dt>
                   <dd>
                     <Counter
                       value={stat.value}

@@ -65,12 +65,28 @@ for (const slug of projectFiles) {
   if (!EXPECTED_PROJECTS.includes(slug)) fail(`content/projects/${slug}.mdx is not an approved project`);
 }
 
-// --- 4. The payroll case study must not link the live app -----------------
+// --- 4. The live payroll app URL must never ship, and the case study ------
+//        must carry no `live:` or `repo:` link at all. That app is publicly
+//        reachable and holds real employee wage data.
+const LIVE_PAYROLL_URL = "lopez-industries-payroll-system.vercel.app";
+const filesToScanForPayrollUrl = [...sourceFiles];
+if (existsSync("README.md")) filesToScanForPayrollUrl.push("README.md");
+for (const file of filesToScanForPayrollUrl) {
+  if (readFileSync(file, "utf8").includes(LIVE_PAYROLL_URL)) {
+    fail(`${file}: must not link the live payroll app (real employee wage data)`);
+  }
+}
+
 const payrollPath = "content/projects/lopez-payroll.mdx";
 if (existsSync(payrollPath)) {
   const payroll = readFileSync(payrollPath, "utf8");
-  if (payroll.includes("lopez-industries-payroll-system.vercel.app")) {
-    fail(`${payrollPath}: must not link the live payroll app (real employee wage data)`);
+  const frontmatterMatch = payroll.match(/^---\n([\s\S]*?)\n---/);
+  const frontmatter = frontmatterMatch ? frontmatterMatch[1] : "";
+  if (/^\s*live:/m.test(frontmatter)) {
+    fail(`${payrollPath}: frontmatter must not have a "live" key (real employee wage data)`);
+  }
+  if (/^\s*repo:/m.test(frontmatter)) {
+    fail(`${payrollPath}: frontmatter must not have a "repo" key (real employee wage data)`);
   }
 }
 

@@ -77,11 +77,6 @@ export function getAllProjects(): Project[] {
     .sort((a, b) => a.order - b.order || b.year - a.year);
 }
 
-export function getFeaturedProjects(limit = 3): Project[] {
-  const featured = getAllProjects().filter((project) => project.featured);
-  return (featured.length > 0 ? featured : getAllProjects()).slice(0, limit);
-}
-
 export function getProject(slug: string): Project | undefined {
   return getAllProjects().find((project) => project.slug === slug);
 }
