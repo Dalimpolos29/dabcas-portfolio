@@ -1,54 +1,62 @@
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
-import { Chip, StatusPill } from "@/components/ui";
+import { ProjectCover } from "@/components/project-cover";
+import { StatusPill } from "@/components/ui";
 import type { Project } from "@/lib/projects";
 
-export function ProjectCard({ project }: { project: Project }) {
+/**
+ * A project rendered as a ledger entry: ruled rather than carded, with the
+ * cover as its attachment and the figures set in tabular mono so they stack
+ * into a column down the page.
+ */
+export function ProjectCard({ project, priority = false }: { project: Project; priority?: boolean }) {
   return (
-    <article className="group relative flex flex-col overflow-hidden rounded-(--radius-card) border border-border bg-surface transition-colors hover:border-border-strong">
-      {project.cover ? (
-        <div className="relative aspect-16/9 overflow-hidden border-b border-border bg-surface-raised">
-          <Image
-            src={project.cover}
-            alt=""
-            fill
-            sizes="(min-width: 768px) 50vw, 100vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-          />
-        </div>
-      ) : (
-        // Placeholder keeps the grid even until you add screenshots.
-        <div className="relative flex aspect-16/9 items-center justify-center overflow-hidden border-b border-border bg-surface-raised">
-          <div className="absolute inset-0 bg-grid opacity-70" aria-hidden="true" />
-          <span className="relative rounded-md border border-border bg-surface px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.16em] text-fg-subtle">
-            {project.stack[0] ?? project.title}
+    <article className="group relative flex h-full flex-col border-t-2 border-border-strong bg-surface transition-colors hover:bg-surface-raised">
+      <div className="relative aspect-16/9 border-b border-border">
+        {project.cover ? (
+          <ProjectCover src={project.cover} alt={`${project.title} interface`} priority={priority} />
+        ) : (
+          <div className="flex size-full items-center justify-center bg-surface-raised">
+            <span className="field">{project.stack[0] ?? project.title}</span>
+          </div>
+        )}
+      </div>
+
+      <div className="flex flex-1 flex-col p-5 sm:p-6">
+        <div className="flex items-baseline justify-between gap-4">
+          <span className="field" data-figure>
+            {project.year}
           </span>
-        </div>
-      )}
-
-      <div className="flex flex-1 flex-col p-5">
-        <div className="mb-2.5 flex items-center gap-2.5">
           <StatusPill status={project.status} />
-          <span className="font-mono text-[11px] text-fg-subtle">{project.year}</span>
         </div>
 
-        <h3 className="text-lg font-semibold">
+        <h3 className="mt-3 font-display text-xl leading-tight tracking-tight sm:text-2xl">
           <Link href={`/work/${project.slug}`} className="after:absolute after:inset-0">
             {project.title}
           </Link>
         </h3>
 
-        <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-fg-muted">{project.summary}</p>
+        <p className="mt-1.5 text-sm text-fg-subtle">{project.client}</p>
 
-        <div className="mt-4 flex flex-wrap gap-1.5">
-          {project.stack.slice(0, 4).map((tech) => (
-            <Chip key={tech}>{tech}</Chip>
-          ))}
-          {project.stack.length > 4 && <Chip>+{project.stack.length - 4}</Chip>}
-        </div>
+        <p className="mt-4 line-clamp-3 flex-1 text-sm leading-relaxed text-fg-muted">
+          {project.summary}
+        </p>
 
-        <div className="mt-5 flex items-center gap-1.5 pt-4 text-sm font-medium text-accent border-t border-border">
+        <dl className="mt-5 space-y-0 border-t border-border pt-4">
+          <div className="flex items-baseline justify-between gap-4 py-1">
+            <dt className="field">Stack</dt>
+            <dd className="text-right font-mono text-xs text-fg-muted">
+              {project.stack.slice(0, 3).join(" · ")}
+              {project.stack.length > 3 && ` +${project.stack.length - 3}`}
+            </dd>
+          </div>
+          <div className="flex items-baseline justify-between gap-4 py-1">
+            <dt className="field">Role</dt>
+            <dd className="text-right font-mono text-xs text-fg-muted">{project.role}</dd>
+          </div>
+        </dl>
+
+        <div className="rule-double mt-4 flex items-center gap-1.5 pt-4 text-sm font-medium text-accent">
           Read case study
           <ArrowUpRight className="size-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </div>

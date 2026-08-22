@@ -106,3 +106,24 @@ src/lib/site.ts         All personal + brand configuration
 src/lib/projects.ts     Reads and sorts the MDX files
 scripts/verify-site.mjs Acceptance checks run by `npm run verify`
 ```
+
+## Design
+
+The visual direction is **the ledger** — the work is systems of record (payroll runs,
+timesheets, merit slips, purchase orders reconciled to the centavo), so the surface is
+ruled rather than carded, and every figure is set in tabular monospace.
+
+- **Palette** lives in `src/app/globals.css`. Dark is the primary ground (near-black with
+  a green cast); light is a mint-tinted paper holding the same teal ink. Change the six
+  values under `Brand` in each block to re-skin the whole site.
+- **Type**: Bricolage Grotesque (display), IBM Plex Sans (body), IBM Plex Mono (figures
+  and field labels).
+- **Project covers** live in `public/projects/`, referenced by the `cover` key in each
+  case study's frontmatter. Three are real screenshots of the running products; the
+  payroll one is a hand-built SVG, because that app holds real employee wage data and is
+  never linked or captured.
+- **The signature**: covers sit in teal duotone at rest and release to full colour on
+  hover or keyboard focus (`.cover-veil`). Three shipped products means three unrelated
+  brands; the veil holds them in one identity until you point at one. It is CSS-only, so
+  `ProjectCover` stays a Server Component. On touch devices, where there is no hover,
+  covers render in full colour.
