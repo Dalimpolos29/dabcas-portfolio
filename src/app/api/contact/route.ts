@@ -67,20 +67,29 @@ export async function POST(request: Request) {
     );
   }
 
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from,
-      to: [to],
-      reply_to: email,
-      subject: `Portfolio enquiry from ${name}`,
-      text: `From: ${name} <${email}>\n\n${message}`,
-    }),
-  });
+  let response: Response;
+  try {
+    response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from,
+        to: [to],
+        reply_to: email,
+        subject: `Portfolio enquiry from ${name}`,
+        text: `From: ${name} <${email}>\n\n${message}`,
+      }),
+    });
+  } catch (err) {
+    console.error("Contact form delivery failed (network error):", err);
+    return NextResponse.json(
+      { error: "Something went wrong sending that. Please email me directly." },
+      { status: 502 },
+    );
+  }
 
   if (!response.ok) {
     console.error("Contact form delivery failed:", response.status, await response.text());

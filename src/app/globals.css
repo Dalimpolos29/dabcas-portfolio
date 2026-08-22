@@ -131,6 +131,17 @@
   .bg-grid-fade {
     mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 20%, transparent 75%);
   }
+
+  /* Native horizontal scroll container with the scrollbar hidden — used by
+     PinnedGallery, which drives scrollLeft programmatically. */
+  .scrollbar-hide {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

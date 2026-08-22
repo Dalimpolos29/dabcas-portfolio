@@ -37,18 +37,3 @@ export function Logo() {
     </Link>
   );
 }
-
-/** Studio lockup: wordmark plus descriptor. Used on /services and in the footer. */
-export function CompanyMark({ className = "" }: { className?: string }) {
-  return (
-    <div className={`flex items-center gap-3 ${className}`}>
-      <LogoMark className="size-10" />
-      <div className="leading-tight">
-        <div className="text-lg font-bold tracking-[0.16em]">{site.company.name}</div>
-        <div className="font-mono text-[11px] uppercase tracking-[0.18em] text-fg-subtle">
-          {site.company.descriptor}
-        </div>
-      </div>
-    </div>
-  );
-}

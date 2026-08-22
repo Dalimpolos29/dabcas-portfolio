@@ -5,7 +5,7 @@ import { getAllProjects } from "@/lib/projects";
 
 export const metadata: Metadata = {
   title: "Work",
-  description: "Selected projects — web applications, mobile apps and client builds.",
+  description: "Selected projects — web applications and client builds.",
 };
 
 export default function WorkPage() {

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ArrowRight, Download } from "lucide-react";
 import { AvailabilityBadge, ButtonLink, Chip, Container } from "@/components/ui";
+import { Reveal } from "@/components/motion/reveal";
 import { bio, education, experience, site, skills } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -26,53 +27,71 @@ export default function AboutPage() {
 
       <div className="mt-12 grid gap-14 lg:grid-cols-[1fr_16rem] lg:gap-16">
         <div>
-          <div className="space-y-5 text-[16px] leading-relaxed text-fg-muted">
-            {bio.map((paragraph) => (
-              <p key={paragraph.slice(0, 32)}>{paragraph}</p>
-            ))}
-          </div>
-
-          <section className="mt-14">
-            <h2 className="font-mono text-[11px] uppercase tracking-[0.18em] text-fg-subtle">
-              Experience
-            </h2>
-            <ol className="mt-6 space-y-8">
-              {experience.map((item) => (
-                <li key={`${item.org}-${item.period}`} className="border-l-2 border-border pl-5">
-                  <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                    <h3 className="font-medium">
-                      {item.role}
-                      <span className="text-fg-muted"> · {item.org}</span>
-                    </h3>
-                    <span className="font-mono text-xs text-fg-subtle">{item.period}</span>
-                  </div>
-                  <p className="mt-2 text-sm leading-relaxed text-fg-muted">{item.description}</p>
-                </li>
+          <Reveal>
+            <div className="space-y-5 text-[16px] leading-relaxed text-fg-muted">
+              {bio.map((paragraph) => (
+                <p key={paragraph.slice(0, 32)}>{paragraph}</p>
               ))}
-            </ol>
-          </section>
+            </div>
+          </Reveal>
 
-          {education.length > 0 && (
+          <Reveal>
             <section className="mt-14">
               <h2 className="font-mono text-[11px] uppercase tracking-[0.18em] text-fg-subtle">
-                Education
+                Experience
               </h2>
-              <ul className="mt-6 space-y-4">
-                {education.map((item) => (
-                  <li
-                    key={item.title}
-                    className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-border pb-4"
-                  >
-                    <div>
-                      <h3 className="text-sm font-medium">{item.title}</h3>
-                      <p className="text-sm text-fg-muted">{item.org}</p>
-                    </div>
-                    <span className="font-mono text-xs text-fg-subtle">{item.period}</span>
+              <ol className="mt-6 space-y-8">
+                {experience.map((item, index) => (
+                  <li key={`${item.org}-${item.period}`} className="border-l-2 border-border pl-5">
+                    <Reveal delay={index * 0.08}>
+                      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                        <h3 className="font-medium">
+                          {item.role}
+                          <span className="text-fg-muted"> · {item.org}</span>
+                        </h3>
+                        <span className="font-mono text-xs text-fg-subtle">{item.period}</span>
+                      </div>
+                      <p className="mt-2 text-sm leading-relaxed text-fg-muted">{item.description}</p>
+                    </Reveal>
                   </li>
                 ))}
-              </ul>
+              </ol>
             </section>
+          </Reveal>
+
+          {education.length > 0 && (
+            <Reveal>
+              <section className="mt-14">
+                <h2 className="font-mono text-[11px] uppercase tracking-[0.18em] text-fg-subtle">
+                  Education
+                </h2>
+                <ul className="mt-6 space-y-4">
+                  {education.map((item) => (
+                    <li
+                      key={item.title}
+                      className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-border pb-4"
+                    >
+                      <div>
+                        <h3 className="text-sm font-medium">{item.title}</h3>
+                        <p className="text-sm text-fg-muted">{item.org}</p>
+                      </div>
+                      <span className="font-mono text-xs text-fg-subtle">{item.period}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            </Reveal>
           )}
+
+          <section className="mt-14 rounded-(--radius-card) border border-border bg-surface p-6">
+            <h2 className="font-mono text-[11px] uppercase tracking-[0.18em] text-fg-subtle">
+              Freelance
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-fg-muted">
+              {site.company.note} It&apos;s how the client work above is invoiced — I&apos;m looking
+              for a full-time role, and freelance projects continue alongside it.
+            </p>
+          </section>
 
           <div className="mt-14 flex flex-wrap gap-3">
             <ButtonLink href="/contact">

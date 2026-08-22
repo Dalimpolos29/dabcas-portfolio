@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     template: `%s · ${site.name}`,
   },
   description: site.tagline,
-  keywords: [site.name, site.company.name, site.role, "Next.js", "TypeScript", "React Native"],
+  keywords: [site.name, site.company.name, site.role, "Next.js", "TypeScript", "Supabase"],
   authors: [{ name: site.name, url: site.url }],
   creator: site.name,
   openGraph: {
@@ -43,6 +43,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
+        <noscript>
+          <style>{`[data-reveal] { opacity: 1 !important; transform: none !important; }`}</style>
+        </noscript>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <a
             href="#main"
