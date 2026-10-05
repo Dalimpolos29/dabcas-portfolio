@@ -1,0 +1,10 @@
+{
+  "name": "dabcas-hero-reel",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx --yes hyperframes@0.8.134 preview",
+    "check": "npx --yes hyperframes@0.8.134 check",
+    "render": "npx --yes hyperframes@0.8.134 render -o ../../public/media/hero-reel.mp4"
+  }
+}

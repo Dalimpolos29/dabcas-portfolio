@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="dabcas-fill" x1="10" y1="6" x2="56" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0f766e"/>
+      <stop offset="0.5" stop-color="#14b8a6"/>
+      <stop offset="1" stop-color="#7fffd4"/>
+    </linearGradient>
+  </defs>
+  <path d="M32 6.5 54 19.25v25.5L32 57.5 10 44.75v-25.5Z" fill="url(#dabcas-fill)" stroke="url(#dabcas-fill)" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M32 6.5 54 19.25 32 32 10 19.25Z" fill="#fff" fill-opacity="0.1"/>
+  <path d="M23 20h8a12 12 0 0 1 0 24h-8Z" stroke="#fff" stroke-width="5.5" stroke-linejoin="round"/>
+  <circle cx="31" cy="32" r="3" fill="#7fffd4"/>
+</svg>

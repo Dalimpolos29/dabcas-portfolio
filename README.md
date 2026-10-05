@@ -55,12 +55,30 @@ to it.
 
 ## Motion primitives
 
-`src/components/motion/` holds three primitives — `Reveal`, `Counter`, and `PinnedGallery` —
-used throughout the site for scroll-triggered animation. All three call `useReducedMotion()`
+`src/components/motion/` holds four primitives — `Reveal`, `Counter`, `PinnedGallery` and
+`HeroReel` — used throughout the site for animation. All of them call `useReducedMotion()`
 and honour `prefers-reduced-motion: reduce`: under reduced motion, content renders in its final
 state immediately (no fade-in, counters show their end value, the pinned gallery degrades to a
-plain vertical grid) with no perceived motion. This is a hard requirement, verified by
+plain vertical grid, the hero reel holds its poster frame) with no perceived motion. This is a hard requirement, verified by
 `npm run verify` (see below), not a nicety.
+
+### The hero reel (HyperFrames)
+
+The looping animation in the home-page hero is a [HyperFrames](https://hyperframes.heygen.com)
+composition — HTML + GSAP rendered to video — in `hyperframes/hero-reel/`. The rendered files
+live in `public/media/` (`hero-reel.webm`, `hero-reel.mp4`, `hero-reel-poster.jpg`). To change it,
+edit `hyperframes/hero-reel/index.html`, then (Node 22+, FFmpeg required):
+
+```bash
+cd hyperframes/hero-reel
+npm run check    # lint, layout, motion and contrast checks
+npm run render   # writes public/media/hero-reel.mp4
+cd ../../public/media
+ffmpeg -y -i hero-reel.mp4 -c:v libvpx-vp9 -b:v 0 -crf 36 -an hero-reel.webm
+ffmpeg -y -ss 3.5 -i hero-reel.mp4 -frames:v 1 -q:v 3 hero-reel-poster.jpg
+```
+
+GSAP and the fonts are vendored in the composition so rendering never depends on a CDN.
 
 ## `npm run verify` — the acceptance check
 
@@ -109,12 +127,15 @@ scripts/verify-site.mjs Acceptance checks run by `npm run verify`
 
 ## Design
 
-The visual direction is **the ledger** — the work is systems of record (payroll runs,
-timesheets, merit slips, purchase orders reconciled to the centavo), so the surface is
-ruled rather than carded, and every figure is set in tabular monospace.
+The visual direction is **teal and aquamarine**: deep teal ink, aquamarine (`#7fffd4`) as the
+light source, and a teal → aquamarine gradient (`.bg-brand`, `.text-brand`) used for
+emphasis. Copy is kept short — icons, figures and motion carry as much as the words.
 
-- **Palette** lives in `src/app/globals.css`. Dark is the primary ground (near-black with
-  a green cast); light is a mint-tinted paper holding the same teal ink. Change the six
+- **Logo**: the DABCAS mark is a hexagonal block carrying a "D" with an aquamarine node.
+  It's the `LogoMark` component in `src/components/logo.tsx`, the favicon at
+  `src/app/icon.svg`, and standalone files in `public/brand/`.
+- **Palette** lives in `src/app/globals.css`. Dark is the primary ground (deep teal night
+  with aquamarine accents); light is aquamarine-washed paper with deep teal ink. Change the
   values under `Brand` in each block to re-skin the whole site.
 - **Type**: Bricolage Grotesque (display), IBM Plex Sans (body), IBM Plex Mono (figures
   and field labels).

@@ -57,7 +57,7 @@ export default async function ProjectPage({ params }: PageProps<"/work/[slug]">)
             <span className="font-mono text-xs text-fg-subtle">{project.year}</span>
           </div>
 
-          <h1 className="mt-4 max-w-3xl text-3xl font-semibold sm:text-4xl">{project.title}</h1>
+          <h1 className="mt-4 max-w-3xl font-display text-4xl leading-[1.02] sm:text-5xl">{project.title}</h1>
           <p className="mt-4 max-w-2xl text-[17px] leading-relaxed text-fg-muted">{project.summary}</p>
 
           {(project.links.live || project.links.repo || project.links.caseStudy) && (

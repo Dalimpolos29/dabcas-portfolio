@@ -7,13 +7,12 @@ export const site = {
   name: "Dennis Alimpolos",
   shortName: "Dennis",
   role: "AI-Assisted Full-Stack Developer",
-  tagline: "I ship production web systems fast — and I own every line that goes out.",
-  intro:
-    "I build and deploy full-stack web applications that real organisations run on: payroll, school administration, alumni communities, online ordering. AI tooling is how I cover the ground of a whole team; the engineering judgement is mine.",
+  tagline: "I build web systems people run on every day.",
+  intro: "Full-stack developer. Payroll, school, community and ordering apps — shipped fast, owned line by line.",
   location: "Mabalacat, Pampanga, Philippines",
   timezone: "GMT+8",
   availableForWork: true,
-  availabilityNote: "Open to full-time developer roles, remote or hybrid",
+  availabilityNote: "Open to full-time roles · remote or hybrid",
 
   email: "imdennisalimpolos@gmail.com",
   phone: "+63 976 157 1657",
@@ -67,30 +66,35 @@ export const skills = [
   },
 ] as const;
 
-/** The "How I work" strip on the home page. */
+/** The "How I work" tiles on the home page. One line each — the icon does the rest. */
 export const approach = [
   {
-    title: "Ship in days, not quarters",
-    description:
-      "The Merit & Demerit system went from nothing to deployed in a single day, and 200+ people used it daily after that. AI tooling collapses the distance between a decision and working software.",
+    icon: "zap",
+    title: "Ship in days",
+    description: "Merit & Demerit went from idea to 200+ daily users in one day.",
   },
   {
-    title: "Correctness before cleverness",
-    description:
-      "The systems I build handle wages, attendance records and student discipline. I write the migration that reconciles to the centavo and the test that stops a permission scope quietly widening.",
+    icon: "shield",
+    title: "Correct first",
+    description: "Wages and records that reconcile to the centavo.",
   },
   {
-    title: "I read every line that ships",
-    description:
-      "Speed is only worth having if you can still explain the code. I can walk through any decision in these projects and tell you what it does and why it's there.",
+    icon: "eye",
+    title: "Every line read",
+    description: "AI speeds me up. I own and can explain what ships.",
   },
 ] as const;
 
 export const bio = [
-  "I'm a full-stack developer based in Pampanga, Philippines. I build web applications end to end — data model, API, and the interface on top — and I deploy them for people who then depend on them every day.",
-  "I came to development from teaching, not from a computer science degree. I'm currently a STEAM technology teacher, which means I spend my days explaining how software works to teenagers and my evenings building the systems my school and my clients actually run on. Four of those are in production now.",
-  "My stack is TypeScript everywhere: Next.js on the front, Supabase and Postgres behind it. I work heavily with AI tooling — Claude Code is part of my daily workflow. It changes how much ground one developer can cover; it doesn't change who's accountable for the result.",
-  "The work I'm proudest of isn't the fastest thing I've built. It's a payroll approval path where I found a race condition that could double-apply loan deductions, and fixed it so it can't happen again. That's real money belonging to real people.",
+  "Full-stack developer in Pampanga, Philippines. I build web apps end to end — data model, API, interface — and deploy them for people who depend on them daily.",
+  "I came to code from teaching, not a CS degree. TypeScript everywhere, Next.js and Supabase, with Claude Code in my daily workflow.",
+] as const;
+
+/** Quick facts on the About page, shown as icon tiles. */
+export const highlights = [
+  { icon: "rocket", label: "4 products in production" },
+  { icon: "school", label: "STEAM teacher by day" },
+  { icon: "shield", label: "Found and fixed a payroll race condition" },
 ] as const;
 
 export const experience = [
@@ -99,21 +103,20 @@ export const experience = [
     org: "Saint Paul American School, Clark",
     period: "Present",
     description:
-      "Teach AI, web development, programming and robotics to high school students, using n8n and Claude in real project work. Also build the school's internal systems — attendance, scoring, and the merit/demerit platform used by 200+ students, teachers and administrators.",
+      "Teach AI, web dev, programming and robotics. Built the school's merit/demerit platform, used by 200+ people.",
   },
   {
     role: "AI-Assisted Full-Stack Developer (Freelance)",
     org: "DABCAS",
     period: "2023 — Present",
     description:
-      "Design, build and deploy web systems for clients: a DOLE-compliant payroll and attendance platform, an alumni community for 170–200 members, and a pastry ordering PWA serving 100–130 customers. Scoping through deployment and support, solo.",
+      "Payroll and attendance, an alumni community, a pastry ordering PWA. Scoping to support, solo.",
   },
   {
     role: "Technical Support Specialist",
     org: "Apple · HelpFlow",
     period: "Earlier",
-    description:
-      "Troubleshot technical issues across client systems and environments, and worked with cross-functional teams to resolve escalations. Where I learned to diagnose a problem from an unreliable description of it.",
+    description: "Diagnosed issues across client systems and resolved escalations.",
   },
 ] as const;
 
