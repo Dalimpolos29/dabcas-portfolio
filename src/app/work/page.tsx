@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ProjectCard } from "@/components/project-card";
-import { Container } from "@/components/ui";
+import { Reveal } from "@/components/motion/reveal";
+import { Container, Eyebrow } from "@/components/ui";
 import { getAllProjects } from "@/lib/projects";
 
 export const metadata: Metadata = {
@@ -14,18 +15,19 @@ export default function WorkPage() {
   return (
     <Container className="py-16 sm:py-20">
       <header className="max-w-2xl">
-        <p className="mb-3 font-mono text-xs uppercase tracking-[0.18em] text-accent">Work</p>
-        <h1 className="text-3xl font-semibold sm:text-4xl">Projects</h1>
-        <p className="mt-4 text-[15px] leading-relaxed text-fg-muted">
-          Each write-up covers the problem, the decisions I made and what shipped. Where a project is
-          public, the live site and source are linked.
-        </p>
+        <Eyebrow>Work</Eyebrow>
+        <h1 className="font-display text-4xl leading-[1.02] sm:text-5xl">
+          Shipped and <span className="text-brand">in use</span>
+        </h1>
+        <p className="mt-4 text-[16px] text-fg-muted">The problem, the decisions, what shipped.</p>
       </header>
 
       {projects.length > 0 ? (
         <div className="mt-12 grid gap-6 sm:grid-cols-2">
-          {projects.map((project) => (
-            <ProjectCard key={project.slug} project={project} />
+          {projects.map((project, index) => (
+            <Reveal key={project.slug} delay={(index % 2) * 0.08} className="h-full">
+              <ProjectCard project={project} priority={index < 2} />
+            </Reveal>
           ))}
         </div>
       ) : (

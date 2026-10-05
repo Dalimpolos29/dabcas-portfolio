@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="en" data-resolution="square">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1080" />
+    <!-- Vendored so the render never depends on a CDN. -->
+    <script src="vendor/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: "Bricolage Grotesque";
+        src: url("fonts/bricolage-grotesque-latin-800-normal.woff2") format("woff2");
+        font-weight: 800;
+      }
+      @font-face {
+        font-family: "IBM Plex Mono";
+        src: url("fonts/ibm-plex-mono-latin-500-normal.woff2") format("woff2");
+        font-weight: 500;
+      }
+
+      :root {
+        --night: #021a18;
+        --teal: #14b8a6;
+        --teal-deep: #0f766e;
+        --aqua: #7fffd4;
+        --ink: #e8fffa;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1080px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--night);
+      }
+
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 50% 50%, #06332e 0%, transparent 60%),
+          var(--night);
+      }
+
+      .glow {
+        position: absolute;
+        width: 620px;
+        height: 620px;
+        border-radius: 50%;
+        filter: blur(90px);
+        opacity: 0.32;
+      }
+      #glow-a {
+        left: -140px;
+        top: -160px;
+        background: var(--teal);
+      }
+      #glow-b {
+        right: -180px;
+        bottom: -200px;
+        background: var(--aqua);
+        opacity: 0.2;
+      }
+
+      #dots {
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(rgba(127, 255, 212, 0.16) 1.5px, transparent 1.5px);
+        background-size: 36px 36px;
+        mask-image: radial-gradient(circle at 50% 50%, #000 0%, transparent 72%);
+      }
+
+      #links {
+        position: absolute;
+        inset: 0;
+      }
+      #links line {
+        stroke: url(#link-grad);
+        stroke-width: 3;
+        stroke-linecap: round;
+        stroke-dasharray: 420;
+        stroke-dashoffset: 420;
+      }
+
+      .packet {
+        position: absolute;
+        left: 531px;
+        top: 531px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: var(--aqua);
+        box-shadow: 0 0 24px 6px rgba(127, 255, 212, 0.55);
+        opacity: 0;
+      }
+
+      #core {
+        position: absolute;
+        left: 540px;
+        top: 540px;
+        width: 0;
+        height: 0;
+      }
+      #ring {
+        position: absolute;
+        left: -185px;
+        top: -185px;
+        width: 370px;
+        height: 370px;
+        border-radius: 50%;
+        border: 2px dashed rgba(127, 255, 212, 0.35);
+        opacity: 0;
+      }
+      #ring-solid {
+        position: absolute;
+        left: -150px;
+        top: -150px;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(20, 184, 166, 0.35) 0%, transparent 70%);
+        opacity: 0;
+      }
+      #mark {
+        position: absolute;
+        left: -130px;
+        top: -130px;
+        width: 260px;
+        height: 260px;
+        filter: drop-shadow(0 30px 60px rgba(20, 184, 166, 0.45));
+      }
+      #mark-d {
+        stroke-dasharray: 80;
+        stroke-dashoffset: 80;
+      }
+
+      #wordmark {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 960px;
+        text-align: center;
+        font: 800 34px/1 "Bricolage Grotesque", sans-serif;
+        letter-spacing: 0.42em;
+        color: var(--ink);
+        opacity: 0;
+      }
+
+      .tile {
+        position: absolute;
+        width: 270px;
+        height: 176px;
+        padding: 24px;
+        border-radius: 24px;
+        background: linear-gradient(160deg, rgba(10, 64, 58, 0.95), rgba(4, 38, 35, 0.95));
+        border: 1.5px solid rgba(127, 255, 212, 0.28);
+        box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.8);
+        opacity: 0;
+      }
+      .tile-head {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 54px;
+        height: 54px;
+        border-radius: 15px;
+        background: linear-gradient(135deg, var(--teal-deep), var(--teal) 55%, var(--aqua));
+      }
+      .icon svg {
+        width: 30px;
+        height: 30px;
+        fill: none;
+        stroke: #fff;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .label {
+        font: 500 20px/1 "IBM Plex Mono", monospace;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--ink);
+      }
+      .live {
+        margin-left: auto;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--aqua);
+        box-shadow: 0 0 12px var(--aqua);
+      }
+      .bars {
+        display: flex;
+        align-items: flex-end;
+        gap: 10px;
+        height: 62px;
+        margin-top: 24px;
+      }
+      .bar {
+        flex: 1;
+        border-radius: 6px 6px 2px 2px;
+        background: linear-gradient(to top, var(--teal-deep), var(--aqua));
+        transform-origin: 50% 100%;
+        transform: scaleY(0);
+      }
+
+      #tile-tl { left: 112px; top: 150px; }
+      #tile-tr { left: 698px; top: 150px; }
+      #tile-bl { left: 112px; top: 754px; }
+      #tile-br { left: 698px; top: 754px; }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="8"
+      data-width="1080"
+      data-height="1080"
+    >
+      <div id="glow-a" class="glow" data-layout-allow-overflow></div>
+      <div id="glow-b" class="glow" data-layout-allow-overflow></div>
+      <div id="dots"></div>
+
+      <svg id="links" viewBox="0 0 1080 1080" aria-hidden="true">
+        <defs>
+          <linearGradient id="link-grad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#14b8a6" />
+            <stop offset="1" stop-color="#7fffd4" />
+          </linearGradient>
+        </defs>
+        <line id="link-tl" x1="540" y1="540" x2="332" y2="326" />
+        <line id="link-tr" x1="540" y1="540" x2="748" y2="326" />
+        <line id="link-bl" x1="540" y1="540" x2="332" y2="754" />
+        <line id="link-br" x1="540" y1="540" x2="748" y2="754" />
+      </svg>
+
+      <div class="packet" id="p-tl-0"></div>
+      <div class="packet" id="p-tl-1"></div>
+      <div class="packet" id="p-tl-2"></div>
+      <div class="packet" id="p-tr-0"></div>
+      <div class="packet" id="p-tr-1"></div>
+      <div class="packet" id="p-tr-2"></div>
+      <div class="packet" id="p-bl-0"></div>
+      <div class="packet" id="p-bl-1"></div>
+      <div class="packet" id="p-bl-2"></div>
+      <div class="packet" id="p-br-0"></div>
+      <div class="packet" id="p-br-1"></div>
+      <div class="packet" id="p-br-2"></div>
+
+      <div id="core">
+        <div id="ring-solid"></div>
+        <div id="ring"></div>
+        <svg id="mark" viewBox="0 0 64 64" fill="none">
+          <defs>
+            <linearGradient id="mark-fill" x1="10" y1="6" x2="56" y2="60" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#0f766e" />
+              <stop offset="0.5" stop-color="#14b8a6" />
+              <stop offset="1" stop-color="#7fffd4" />
+            </linearGradient>
+          </defs>
+          <g id="mark-hex">
+            <path
+              d="M32 6.5 54 19.25v25.5L32 57.5 10 44.75v-25.5Z"
+              fill="url(#mark-fill)"
+              stroke="url(#mark-fill)"
+              stroke-width="5"
+              stroke-linejoin="round"
+            />
+            <path d="M32 6.5 54 19.25 32 32 10 19.25Z" fill="#fff" fill-opacity="0.1" />
+          </g>
+          <path
+            id="mark-d"
+            d="M23 20h8a12 12 0 0 1 0 24h-8Z"
+            stroke="#fff"
+            stroke-width="5.5"
+            stroke-linejoin="round"
+          />
+          <circle id="mark-node" cx="31" cy="32" r="3" fill="#7fffd4" />
+        </svg>
+      </div>
+
+      <div class="tile" id="tile-tl">
+        <div class="tile-head">
+          <div class="icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1" />
+              <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" />
+            </svg>
+          </div>
+          <span class="label">Payroll</span>
+          <span class="live"></span>
+        </div>
+        <div class="bars">
+          <div class="bar" style="height: 45%"></div>
+          <div class="bar" style="height: 70%"></div>
+          <div class="bar" style="height: 55%"></div>
+          <div class="bar" style="height: 90%"></div>
+          <div class="bar" style="height: 100%"></div>
+        </div>
+      </div>
+
+      <div class="tile" id="tile-tr">
+        <div class="tile-head">
+          <div class="icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z" />
+              <path d="M22 10v6" />
+              <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5" />
+            </svg>
+          </div>
+          <span class="label">School</span>
+          <span class="live"></span>
+        </div>
+        <div class="bars">
+          <div class="bar" style="height: 80%"></div>
+          <div class="bar" style="height: 60%"></div>
+          <div class="bar" style="height: 95%"></div>
+          <div class="bar" style="height: 70%"></div>
+          <div class="bar" style="height: 85%"></div>
+        </div>
+      </div>
+
+      <div class="tile" id="tile-bl">
+        <div class="tile-head">
+          <div class="icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+              <path d="M16 3.128a4 4 0 0 1 0 7.744" />
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+              <circle cx="9" cy="7" r="4" />
+            </svg>
+          </div>
+          <span class="label">Alumni</span>
+          <span class="live"></span>
+        </div>
+        <div class="bars">
+          <div class="bar" style="height: 35%"></div>
+          <div class="bar" style="height: 50%"></div>
+          <div class="bar" style="height: 65%"></div>
+          <div class="bar" style="height: 80%"></div>
+          <div class="bar" style="height: 100%"></div>
+        </div>
+      </div>
+
+      <div class="tile" id="tile-br">
+        <div class="tile-head">
+          <div class="icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M10.2 18H4.774a1.5 1.5 0 0 1-1.352-.97 11 11 0 0 1 .132-6.487" />
+              <path d="M18 10.2V4.774a1.5 1.5 0 0 0-.97-1.352 11 11 0 0 0-6.486.132" />
+              <path d="M18 5a4 3 0 0 1 4 3 2 2 0 0 1-2 2 10 10 0 0 0-5.139 1.42" />
+              <path d="M5 18a3 4 0 0 0 3 4 2 2 0 0 0 2-2 10 10 0 0 1 1.42-5.14" />
+              <path d="M8.709 2.554a10 10 0 0 0-6.155 6.155 1.5 1.5 0 0 0 .676 1.626l9.807 5.42a2 2 0 0 0 2.718-2.718l-5.42-9.807a1.5 1.5 0 0 0-1.626-.676" />
+            </svg>
+          </div>
+          <span class="label">Orders</span>
+          <span class="live"></span>
+        </div>
+        <div class="bars">
+          <div class="bar" style="height: 60%"></div>
+          <div class="bar" style="height: 85%"></div>
+          <div class="bar" style="height: 50%"></div>
+          <div class="bar" style="height: 75%"></div>
+          <div class="bar" style="height: 95%"></div>
+        </div>
+      </div>
+
+      <div id="wordmark">DABCAS</div>
+    </div>
+
+    <script>
+      /*
+       * An 8-second seamless loop: the DABCAS mark assembles, wires itself to
+       * four live systems (the four shipped products), data flows along the
+       * links, then everything dissolves back to the empty frame it began on.
+       */
+      const tl = gsap.timeline({ paused: true });
+      const ease = "power3.out";
+      const corners = ["tl", "tr", "bl", "br"];
+      // Packet travel from the core (540,540) to where each link meets its tile.
+      const travel = {
+        tl: { x: -208, y: -214 },
+        tr: { x: 208, y: -214 },
+        bl: { x: -208, y: 214 },
+        br: { x: 208, y: 214 },
+      };
+
+      // Ambient light drifts the whole time, and returns home by the loop point.
+      tl.fromTo("#glow-a", { x: 0, y: 0 }, { x: 160, y: 120, duration: 4, ease: "sine.inOut" }, 0);
+      tl.to("#glow-a", { x: 0, y: 0, duration: 4, ease: "sine.inOut" }, 4);
+      tl.fromTo("#glow-b", { x: 0, y: 0 }, { x: -140, y: -100, duration: 4, ease: "sine.inOut" }, 0);
+      tl.to("#glow-b", { x: 0, y: 0, duration: 4, ease: "sine.inOut" }, 4);
+
+      // 1 — the mark assembles.
+      tl.fromTo(
+        "#mark-hex",
+        { scale: 0, rotation: -90, transformOrigin: "32px 32px" },
+        { scale: 1, rotation: 0, duration: 0.9, ease: "back.out(1.6)" },
+        0.15,
+      );
+      tl.to("#mark-d", { strokeDashoffset: 0, duration: 0.7, ease: "power2.inOut" }, 0.65);
+      // A dashed stroke leaves butt ends where the closed path meets itself;
+      // drop the dash once drawn so the corner joins like the static logo.
+      tl.set("#mark-d", { strokeDasharray: "none" }, 1.36);
+      tl.set("#mark-d", { strokeDasharray: 80 }, 7.09);
+      tl.fromTo(
+        "#mark-node",
+        { scale: 0, transformOrigin: "31px 32px" },
+        { scale: 1, duration: 0.4, ease: "back.out(3)" },
+        1.2,
+      );
+      tl.fromTo("#ring-solid", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.8, ease }, 0.9);
+      tl.fromTo(
+        "#ring",
+        { opacity: 0, scale: 0.8 },
+        { opacity: 1, scale: 1, duration: 0.8, ease, immediateRender: false },
+        1.1,
+      );
+      tl.fromTo("#ring", { rotation: 0 }, { rotation: 120, duration: 8, ease: "none" }, 0);
+
+      // 2 — it wires itself to the four systems.
+      corners.forEach((c, i) => {
+        const at = 1.5 + i * 0.15;
+        tl.to(`#link-${c}`, { strokeDashoffset: 0, duration: 0.6, ease: "power2.out" }, at);
+        tl.fromTo(
+          `#tile-${c}`,
+          { opacity: 0, scale: 0.85, y: 20 },
+          { opacity: 1, scale: 1, y: 0, duration: 0.6, ease },
+          at + 0.35,
+        );
+        tl.fromTo(
+          `#tile-${c} .bar`,
+          { scaleY: 0 },
+          { scaleY: 1, duration: 0.6, ease, stagger: 0.06 },
+          at + 0.65,
+        );
+      });
+
+      tl.fromTo("#wordmark", { opacity: 0, y: 16 }, { opacity: 0.9, y: 0, duration: 0.7, ease }, 2.3);
+
+      // 3 — data flows: three waves of packets per link.
+      corners.forEach((c, i) => {
+        for (let wave = 0; wave < 3; wave++) {
+          const at = 2.7 + wave * 1.25 + i * 0.22;
+          const id = `#p-${c}-${wave}`;
+          tl.fromTo(id, { x: 0, y: 0, opacity: 0 }, { opacity: 1, duration: 0.15 }, at);
+          tl.to(id, { ...travel[c], duration: 0.85, ease: "power1.inOut" }, at);
+          tl.to(id, { opacity: 0, duration: 0.15 }, at + 0.7);
+          // The tile acknowledges each delivery.
+          tl.fromTo(
+            `#tile-${c}`,
+            { borderColor: "rgba(127, 255, 212, 0.28)" },
+            { borderColor: "rgba(127, 255, 212, 0.9)", duration: 0.15, yoyo: true, repeat: 1 },
+            at + 0.8,
+          );
+        }
+      });
+
+      // The mark breathes while the system runs.
+      tl.to("#mark", { scale: 1.06, duration: 1.2, ease: "sine.inOut", yoyo: true, repeat: 3 }, 2.2);
+
+      // 4 — dissolve back to the empty first frame.
+      tl.to(".tile", { opacity: 0, scale: 0.9, duration: 0.6, ease: "power2.in", stagger: 0.05 }, 6.9);
+      tl.to("#links line", { strokeDashoffset: 420, duration: 0.6, ease: "power2.in" }, 6.95);
+      tl.to("#wordmark", { opacity: 0, duration: 0.5 }, 7.0);
+      tl.to(["#ring", "#ring-solid"], { opacity: 0, duration: 0.5 }, 7.1);
+      tl.to("#mark-d", { strokeDashoffset: 80, duration: 0.5, ease: "power2.in" }, 7.1);
+      tl.to("#mark-node", { scale: 0, duration: 0.3, ease: "power2.in" }, 7.1);
+      tl.to("#mark-hex", { scale: 0, rotation: 90, duration: 0.6, ease: "back.in(1.6)" }, 7.3);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

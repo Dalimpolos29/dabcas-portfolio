@@ -5,6 +5,16 @@ export function Container({ className = "", children }: { className?: string; ch
   return <div className={`mx-auto w-full max-w-5xl px-6 ${className}`}>{children}</div>;
 }
 
+/** Small mono label with a leading rule, above a section heading. */
+export function Eyebrow({ children }: { children: ReactNode }) {
+  return (
+    <p className="field mb-4 flex items-center gap-3 text-accent">
+      <span aria-hidden="true" className="bg-brand h-0.5 w-8 rounded-full" />
+      {children}
+    </p>
+  );
+}
+
 /** A page section with a consistent heading treatment. */
 export function Section({
   eyebrow,
@@ -24,12 +34,7 @@ export function Section({
       <Container>
         {(eyebrow || title || description) && (
           <div className="mb-10 max-w-2xl">
-            {eyebrow && (
-              <p className="field mb-4 flex items-center gap-3 text-accent">
-                <span aria-hidden="true" className="h-px w-8 bg-accent" />
-                {eyebrow}
-              </p>
-            )}
+            {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
             {title && (
               <h2 className="font-display text-3xl leading-[1.05] sm:text-4xl">{title}</h2>
             )}
@@ -43,11 +48,11 @@ export function Section({
 }
 
 const buttonBase =
-  "inline-flex items-center justify-center gap-2 rounded-xs font-mono text-[13px] font-medium tracking-wide transition-colors disabled:pointer-events-none disabled:opacity-60";
+  "inline-flex items-center justify-center gap-2 rounded-full font-mono text-[13px] font-medium tracking-wide transition-colors disabled:pointer-events-none disabled:opacity-60";
 
 const buttonSizes = {
-  sm: "h-9 px-3.5",
-  md: "h-11 px-5",
+  sm: "h-9 px-4",
+  md: "h-11 px-6",
 } as const;
 
 const buttonVariants = {
@@ -105,7 +110,7 @@ export function ButtonLink({
 export function Chip({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
     <span
-      className={`inline-flex items-center rounded-xs border border-border bg-transparent px-2 py-0.5 font-mono text-[11px] text-fg-muted ${className}`}
+      className={`inline-flex items-center rounded-full border border-border bg-transparent px-2.5 py-0.5 font-mono text-[11px] text-fg-muted ${className}`}
     >
       {children}
     </span>
@@ -115,7 +120,7 @@ export function Chip({ children, className = "" }: { children: ReactNode; classN
 /** Pulsing dot + label, used for the "available for work" signal. */
 export function AvailabilityBadge({ label }: { label: string }) {
   return (
-    <span className="field inline-flex items-center gap-2.5 border border-border bg-surface px-3 py-1.5 text-fg-muted">
+    <span className="field inline-flex items-center gap-2.5 rounded-full border border-border bg-surface/80 px-3.5 py-1.5 text-fg-muted backdrop-blur">
       <span className="relative flex size-1.5">
         <span className="absolute inline-flex size-full animate-ping rounded-full bg-accent opacity-70" />
         <span className="relative inline-flex size-1.5 rounded-full bg-accent" />
@@ -140,7 +145,7 @@ const statusLabels = {
 export function StatusPill({ status }: { status: keyof typeof statusStyles }) {
   return (
     <span
-      className={`inline-flex items-center rounded-xs border px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.14em] ${statusStyles[status]}`}
+      className={`inline-flex items-center rounded-full border px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.14em] ${statusStyles[status]}`}
     >
       {statusLabels[status]}
     </span>

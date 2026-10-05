@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // HyperFrames composition source (vendored GSAP, not app code).
+    "hyperframes/**",
   ]),
 ]);
 

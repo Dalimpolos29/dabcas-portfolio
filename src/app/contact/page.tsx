@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Mail } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/brand-icons";
 import { ContactForm } from "@/components/contact-form";
-import { AvailabilityBadge, Container } from "@/components/ui";
+import { AvailabilityBadge, Container, Eyebrow } from "@/components/ui";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -22,11 +22,12 @@ export default function ContactPage() {
       <div className="grid gap-14 lg:grid-cols-[1fr_18rem] lg:gap-16">
         <div>
           <header className="max-w-xl">
-            <p className="mb-3 font-mono text-xs uppercase tracking-[0.18em] text-accent">Contact</p>
-            <h1 className="text-3xl font-semibold sm:text-4xl">Let&apos;s talk</h1>
-            <p className="mt-4 text-[15px] leading-relaxed text-fg-muted">
-              Hiring, a project for {site.company.name}, or just a question about something I&apos;ve
-              built — all welcome. I read everything and reply to anything genuine.
+            <Eyebrow>Contact</Eyebrow>
+            <h1 className="font-display text-4xl leading-[1.02] sm:text-5xl">
+              Let&apos;s <span className="text-brand">talk</span>
+            </h1>
+            <p className="mt-4 text-[16px] text-fg-muted">
+              Hiring, a {site.company.name} project, or a question — all welcome.
             </p>
           </header>
 

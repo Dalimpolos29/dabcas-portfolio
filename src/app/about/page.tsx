@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
-import { ArrowRight, Download } from "lucide-react";
-import { AvailabilityBadge, ButtonLink, Chip, Container } from "@/components/ui";
+import { ArrowRight, Download, GraduationCap, Rocket, ShieldCheck } from "lucide-react";
+import { LogoMark } from "@/components/logo";
+import { AvailabilityBadge, ButtonLink, Chip, Container, Eyebrow } from "@/components/ui";
 import { Reveal } from "@/components/motion/reveal";
-import { bio, education, experience, site, skills } from "@/lib/site";
+import { bio, education, experience, highlights, site, skills } from "@/lib/site";
+
+const highlightIcons = { rocket: Rocket, school: GraduationCap, shield: ShieldCheck } as const;
 
 export const metadata: Metadata = {
   title: "About",
@@ -13,8 +16,10 @@ export default function AboutPage() {
   return (
     <Container className="py-16 sm:py-20">
       <header className="max-w-2xl">
-        <p className="mb-3 font-mono text-xs uppercase tracking-[0.18em] text-accent">About</p>
-        <h1 className="text-3xl font-semibold sm:text-4xl">{site.name}</h1>
+        <Eyebrow>About</Eyebrow>
+        <h1 className="font-display text-4xl leading-[1.02] sm:text-5xl">
+          Hi, I&apos;m <span className="text-brand">{site.shortName}</span>.
+        </h1>
         <p className="mt-2 text-[15px] text-fg-muted">
           {site.role} · {site.location}
         </p>
@@ -28,12 +33,28 @@ export default function AboutPage() {
       <div className="mt-12 grid gap-14 lg:grid-cols-[1fr_16rem] lg:gap-16">
         <div>
           <Reveal>
-            <div className="space-y-5 text-[16px] leading-relaxed text-fg-muted">
+            <div className="space-y-4 text-[17px] leading-relaxed text-fg-muted">
               {bio.map((paragraph) => (
                 <p key={paragraph.slice(0, 32)}>{paragraph}</p>
               ))}
             </div>
           </Reveal>
+
+          <div className="mt-10 grid gap-3 sm:grid-cols-3">
+            {highlights.map((item, index) => {
+              const Icon = highlightIcons[item.icon];
+              return (
+                <Reveal key={item.label} delay={index * 0.08} className="h-full">
+                  <div className="lift h-full rounded-(--radius-card) border border-border bg-surface p-5">
+                    <span className="bg-brand inline-flex size-10 items-center justify-center rounded-xl text-[#022c29]">
+                      <Icon className="size-5" />
+                    </span>
+                    <p className="mt-4 text-sm font-medium leading-snug">{item.label}</p>
+                  </div>
+                </Reveal>
+              );
+            })}
+          </div>
 
           <Reveal>
             <section className="mt-14">
@@ -42,7 +63,10 @@ export default function AboutPage() {
               </h2>
               <ol className="mt-6 space-y-8">
                 {experience.map((item, index) => (
-                  <li key={`${item.org}-${item.period}`} className="border-l-2 border-border pl-5">
+                  <li
+                    key={`${item.org}-${item.period}`}
+                    className="relative border-l-2 border-border pl-6 before:absolute before:-left-[7px] before:top-1.5 before:size-3 before:rounded-full before:bg-aqua before:ring-4 before:ring-bg"
+                  >
                     <Reveal delay={index * 0.08}>
                       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                         <h3 className="font-medium">
@@ -83,13 +107,11 @@ export default function AboutPage() {
             </Reveal>
           )}
 
-          <section className="mt-14 rounded-(--radius-card) border border-border bg-surface p-6">
-            <h2 className="font-mono text-[11px] uppercase tracking-[0.18em] text-fg-subtle">
-              Freelance
-            </h2>
-            <p className="mt-3 text-sm leading-relaxed text-fg-muted">
-              {site.company.note} It&apos;s how the client work above is invoiced — I&apos;m looking
-              for a full-time role, and freelance projects continue alongside it.
+          <section className="mt-14 flex items-center gap-4 rounded-(--radius-card) border border-border bg-surface p-5">
+            <LogoMark className="size-11 shrink-0" />
+            <p className="text-sm leading-relaxed text-fg-muted">
+              <span className="font-semibold text-fg">{site.company.name}</span> is my freelance
+              practice — client work continues alongside a full-time role.
             </p>
           </section>
 

@@ -5,60 +5,61 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /*
- * Design tokens — "ledger" direction.
+ * Design tokens — teal and aquamarine.
  *
- * The subject is systems of record: payroll runs, timesheets, merit slips,
- * purchase orders reconciled to the centavo. So the surface is ruled rather
- * than carded, figures are tabular, and colour is spent sparingly.
- *
- * Dark is the primary ground; light is a mint-tinted paper that keeps the
- * same teal ink. Change the six values under `Brand` to re-skin everything.
+ * Teal is the ink: links, buttons, rules that matter. Aquamarine (#7fffd4) is
+ * the light source: it's the accent on the dark ground and the far end of
+ * every brand gradient. Change the values under `Brand` to re-skin everything.
  */
 
-/* ---- Light: mint-tinted ledger paper ---------------------------------- */
+/* ---- Light: aquamarine-washed paper, deep teal ink --------------------- */
 :root {
   /* Brand */
-  --teal: #0d7d72;
-  --teal-hover: #0a6259;
-  --teal-contrast: #f2f8f6;
-  --aqua: #0f9c8c;
-  --glow: #14b8a6;
-  --ring: #0d948840;
+  --teal: #0f766e;
+  --teal-hover: #115e59;
+  --teal-contrast: #ffffff;
+  --aqua: #14b8a6;
+  --glow: #7fffd4;
+  --ring: #14b8a640;
+  --brand-from: #0f766e;
+  --brand-to: #2dd4bf;
 
   /* Surfaces */
-  --bg: #f2f7f5;
+  --bg: #f0fdfa;
   --surface: #ffffff;
-  --surface-raised: #e8f1ee;
+  --surface-raised: #def7f0;
 
   /* Text */
-  --fg: #071b17;
-  --fg-muted: #4a635d;
-  --fg-subtle: #6d8781;
+  --fg: #042f2e;
+  --fg-muted: #3d625d;
+  --fg-subtle: #5a7c77;
 
   /* Rules */
-  --rule: #cfe0da;
-  --rule-strong: #a9c6bd;
+  --rule: #c4e8df;
+  --rule-strong: #95d3c5;
 }
 
-/* ---- Dark: near-black with a green cast (the primary ground) ---------- */
+/* ---- Dark: deep teal night, aquamarine light (the primary ground) ------ */
 .dark {
-  --teal: #2dd4bf;
-  --teal-hover: #7fffd4;
-  --teal-contrast: #05100e;
+  --teal: #7fffd4;
+  --teal-hover: #b5ffe7;
+  --teal-contrast: #022c29;
   --aqua: #2dd4bf;
   --glow: #7fffd4;
-  --ring: #2dd4bf40;
+  --ring: #7fffd440;
+  --brand-from: #14b8a6;
+  --brand-to: #7fffd4;
 
-  --bg: #05100e;
-  --surface: #0b1a17;
-  --surface-raised: #10241f;
+  --bg: #021a18;
+  --surface: #042623;
+  --surface-raised: #06332e;
 
-  --fg: #e6f2ee;
-  --fg-muted: #9db5ae;
-  --fg-subtle: #7e9a94;
+  --fg: #e8fffa;
+  --fg-muted: #a1c7c0;
+  --fg-subtle: #7da49d;
 
-  --rule: #17322c;
-  --rule-strong: #24483f;
+  --rule: #0c3b36;
+  --rule-strong: #17574f;
 }
 
 @theme inline {
@@ -84,8 +85,7 @@
   --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, monospace;
 
-  /* Ledger geometry: nearly square. Rounded cards are the thing we're not. */
-  --radius-card: 0.25rem;
+  --radius-card: 1rem;
 }
 
 @layer base {
@@ -151,12 +151,6 @@
     color: var(--fg-subtle);
   }
 
-  /* Ledger's closing double rule, drawn under totals. */
-  .rule-double {
-    border-top: 1px solid var(--rule);
-    box-shadow: 0 3px 0 -1px var(--rule);
-  }
-
   /*
    * Duotone veil for project covers. A full-colour <img> sits underneath;
    * this layer is painted over it and its OPACITY is what animates, so the
@@ -189,16 +183,6 @@
     }
   }
 
-  /* Hairline grid, used once behind the hero. */
-  .bg-rules {
-    background-image: linear-gradient(to bottom, var(--rule) 1px, transparent 1px);
-    background-size: 100% 2.25rem;
-  }
-
-  .bg-rules-fade {
-    mask-image: linear-gradient(to bottom, #000 0%, transparent 70%);
-  }
-
   .scrollbar-hide {
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -209,9 +193,103 @@
   }
 }
 
+@layer components {
+  /* Teal → aquamarine, the brand gradient. */
+  .bg-brand {
+    background-image: linear-gradient(120deg, var(--brand-from), var(--brand-to));
+  }
+
+  .text-brand {
+    background-image: linear-gradient(100deg, var(--brand-from), var(--brand-to));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  /*
+   * Slow-drifting light behind the hero. Two blurred blobs, transform-only
+   * keyframes, so it stays on the compositor.
+   */
+  .aurora {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(80px);
+    opacity: 0.35;
+    will-change: transform;
+  }
+
+  .dark .aurora {
+    opacity: 0.22;
+  }
+
+  .aurora-a {
+    background: var(--aqua);
+    animation: aurora-a 18s ease-in-out infinite alternate;
+  }
+
+  .aurora-b {
+    background: var(--glow);
+    animation: aurora-b 22s ease-in-out infinite alternate;
+  }
+
+  @keyframes aurora-a {
+    to {
+      transform: translate3d(12%, 18%, 0) scale(1.15);
+    }
+  }
+
+  @keyframes aurora-b {
+    to {
+      transform: translate3d(-16%, -10%, 0) scale(0.9);
+    }
+  }
+
+  /* Infinite horizontal ticker. The track holds the list twice. */
+  .marquee {
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .marquee-track {
+    animation: marquee 40s linear infinite;
+  }
+
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
+
+  @keyframes marquee {
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  /* Lift + aquamarine edge on hover, for tiles and cards. */
+  .lift {
+    transition:
+      transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 300ms,
+      box-shadow 300ms;
+  }
+
+  .lift:hover {
+    transform: translateY(-4px);
+    border-color: var(--aqua);
+    box-shadow: 0 18px 40px -24px var(--aqua);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .marquee-track,
+  .aurora {
+    animation: none !important;
+  }
+
+  .lift:hover {
+    transform: none;
   }
 
   *,
